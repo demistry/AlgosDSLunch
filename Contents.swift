@@ -112,3 +112,22 @@ struct QueueStack<T> : Queue{
         return dequeueStack.popLast()
     }
 }
+
+
+///This protocol is used to test an algorithm for the queue structure, check the next player of a board game of identical players
+protocol BoardGameManager{
+    associatedtype Player
+    
+    mutating func nextPlayer()-> Player?
+}
+
+extension QueueStack : BoardGameManager{
+    typealias Player = T
+    mutating func nextPlayer() -> Player? {//get the next player and add back to stack again to begin to await turn...
+        guard let player = dequeue() else{
+            return nil
+        }
+        enqueue(player)
+        return player
+    }
+}
