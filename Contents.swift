@@ -131,3 +131,32 @@ extension QueueStack : BoardGameManager{
         return player
     }
 }
+
+
+
+//MARK:- Selection Sort Algorithm
+///Selection Sort, loop through elements in an array and pick the lowest value and swap into place
+
+func selectionSort<Element : Comparable>(_ array : inout [Element]){
+    guard array.count >= 2 else{// no need to sort if number of elements is less than 2
+        return
+    }
+    
+    for current in 0..<(array.count - 1){ //ignore the last item as that will automatically sort into place
+        var lowest = current
+        
+        for other in (current + 1)..<array.count{
+            if array[lowest] > array[other]{
+                lowest = other
+            }
+        }
+        
+        if lowest != current{
+            array.swapAt(lowest, current)
+        }
+    }
+}
+
+var arr = [1,9,3,7,20,10]
+selectionSort(&arr)
+print(arr)
