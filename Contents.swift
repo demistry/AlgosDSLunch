@@ -157,6 +157,22 @@ func selectionSort<Element : Comparable>(_ array : inout [Element]){
     }
 }
 
+func insertionSort<Element : Comparable>(_ array : inout [Element]){
+    guard array.count >= 2 else{
+        return
+    }
+    var lowestInd = 0
+    for current in 1..<array.count{
+        for shifting in (1...current).reversed(){
+            if array[shifting] < array[shifting - 1]{
+                array.swapAt(shifting, shifting - 1)
+            } else{
+                break
+            }
+        }
+    }
+}
+
 var arr = [1,9,3,7,20,10]
-selectionSort(&arr)
+insertionSort(&arr)
 print(arr)
