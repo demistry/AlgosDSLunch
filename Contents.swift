@@ -216,4 +216,67 @@ func merge<Element : Comparable>(left : [Element], right : [Element])->[Element]
 
 
 
+///Implementing A Binary Node
+class BinaryNode<Element>{
+    var value : Element
+    var leftChild : BinaryNode?
+    var rightChild : BinaryNode?
+    
+    init(value : Element) {
+        self.value = value
+    }
+}
+
+
+var binaryTree : BinaryNode<Int> = {
+    let rootNode = BinaryNode(value: 7)
+
+    let one = BinaryNode(value: 1)
+    let nine = BinaryNode(value: 9)
+    let eight = BinaryNode(value: 8)
+    let zero = BinaryNode(value: 0)
+    let five = BinaryNode(value: 5)
+    
+    rootNode.leftChild = one
+    rootNode.rightChild = nine
+    
+    one.leftChild = zero
+    one.rightChild = five
+    
+    nine.leftChild = eight
+    
+    return rootNode
+}()
+
+//Implementing In-Order Traversal
+
+extension BinaryNode{
+    func traverseInOrder(_ visit : (Element)->Void){
+        leftChild?.traverseInOrder(visit)
+        visit(value)
+        rightChild?.traverseInOrder(visit)
+    }
+    
+    func traversePreOrder(_ visit : (Element)->Void){
+        visit(value)
+        leftChild?.traversePreOrder(visit)
+        rightChild?.traversePreOrder(visit)
+    }
+    
+    func traversePostOrder(_ visit : (Element)->Void){
+        leftChild?.traversePostOrder(visit)
+        rightChild?.traversePostOrder(visit)
+        visit(value)
+    }
+}
+var traverseInOrderArray : [Int] = []
+var traversePreOrderArray : [Int] = []
+var traversePostOrderArray : [Int] = []
+binaryTree.traverseInOrder({traverseInOrderArray.append($0)})
+binaryTree.traversePreOrder({traversePreOrderArray.append($0)})
+binaryTree.traversePostOrder({traversePostOrderArray.append($0)})
+
+print("Traverse in order is \(traverseInOrderArray), :post \(traversePostOrderArray), pre: \(traversePreOrderArray)")
+
+
 
