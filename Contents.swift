@@ -251,16 +251,25 @@ var binaryTree : BinaryNode<Int> = {
 //Implementing In-Order Traversal
 
 extension BinaryNode{
-    func traverseInOrder(_ visit : (Element)->Void){
+    func traverseInOrder(_ visit : (Element?)->Void){
         leftChild?.traverseInOrder(visit)
         visit(value)
         rightChild?.traverseInOrder(visit)
     }
     
-    func traversePreOrder(_ visit : (Element)->Void){
+    func traversePreOrder(_ visit : (Element?)->Void){
         visit(value)
-        leftChild?.traversePreOrder(visit)
-        rightChild?.traversePreOrder(visit)
+        if let leftchild = leftChild{
+            leftchild.traversePreOrder(visit)
+        } else{
+            visit(nil)
+        }
+        if let rightchild = rightChild{
+            rightchild.traversePreOrder(visit)
+        } else{
+            visit(nil)
+        }
+//        rightChild?.traversePreOrder(visit)
     }
     
     func traversePostOrder(_ visit : (Element)->Void){
@@ -268,15 +277,23 @@ extension BinaryNode{
         rightChild?.traversePostOrder(visit)
         visit(value)
     }
+    
+    func serializeIntoArray()->[Element?]{
+        var serializedData : [Element?] = []
+        traversePreOrder{ serializedData.append($0)}
+        return serializedData
+    }
+    
+    
 }
-var traverseInOrderArray : [Int] = []
-var traversePreOrderArray : [Int] = []
-var traversePostOrderArray : [Int] = []
-binaryTree.traverseInOrder({traverseInOrderArray.append($0)})
-binaryTree.traversePreOrder({traversePreOrderArray.append($0)})
-binaryTree.traversePostOrder({traversePostOrderArray.append($0)})
-
-print("Traverse in order is \(traverseInOrderArray), :post \(traversePostOrderArray), pre: \(traversePreOrderArray)")
-
+func deserializeArrayToTree<T>(_ array : inout [T?])->BinaryNode<T>?{
+    guard let value = array.removeLast() else{
+        return nil
+    }
+    let node = BinaryNode(value: value)
+    node.leftChild = deserializeArrayToTree(&array)
+    node.rightChild = deserializeArrayToTree(&array)
+    return node
+}
 
 
